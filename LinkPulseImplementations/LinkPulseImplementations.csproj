@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <None Remove="LuaScripts\AddKey" />
+    <None Remove="LuaScripts\AddKeyExp" />
+    <None Remove="LuaScripts\GetKey" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="LuaScripts\AddKey" />
+    <EmbeddedResource Include="LuaScripts\AddKeyExp" />
+    <EmbeddedResource Include="LuaScripts\GetKey" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
+    <PackageReference Include="StackExchange.Redis" Version="2.7.27" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LinkPulseDefinitions\LinkPulseDefinitions.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>

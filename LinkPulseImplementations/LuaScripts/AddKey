@@ -1,0 +1,8 @@
+﻿local exists = redis.call('EXISTS', @key)
+
+if exists == 0 then
+    redis.call('SET', @key, @val)
+    return true
+else
+    return false
+end

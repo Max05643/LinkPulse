@@ -1,0 +1,11 @@
+﻿local expire_time_ms = tonumber(@exp)
+
+local exists = redis.call('EXISTS', @key)
+
+if exists == 0 then
+    redis.call('SET', @key, @val)
+    redis.call('PEXPIRE', @key, expire_time_ms)
+    return true
+else
+    return false
+end
