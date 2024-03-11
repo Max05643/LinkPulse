@@ -41,7 +41,7 @@ namespace LinkPulseImplementations
         {
             for (int i = 0; i < maxTries; i++)
             {
-                var shortened = hashProvider.Hash("${url}{i}");
+                var shortened = hashProvider.Hash($"{url}{i}");
                 var result = storage.TryAddKeyValuePair(shortened, url, expirationTime);
 
                 if (result)

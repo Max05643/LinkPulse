@@ -1,0 +1,21 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">LinkPulse</h1>
+    <input type="text" id="inputurl">
+    <button id="actionbutton">Shorten the URL</button>
+    <div id="outputpanel">
+        <input type="text" id="output" disabled>
+        <p id="outputinfo"></p>
+    </div>
+    
+</div>
+
+
+@section Scripts
+{
+    <script src="~/lib/jquery/jquery.min.js" asp-append-version="true"></script>
+    <script src="~/js/creationscript.js" asp-append-version="true" defer></script>
+}

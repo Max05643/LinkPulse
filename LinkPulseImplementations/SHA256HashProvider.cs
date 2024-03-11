@@ -15,7 +15,11 @@ namespace LinkPulseImplementations
     {
         string IHashProvider.Hash(string input)
         {
-            return Convert.ToBase64String(SHA256.HashData(Encoding.Unicode.GetBytes(input)))[..15];
+            var result = Convert.ToBase64String(SHA256.HashData(Encoding.Unicode.GetBytes(input)))[..15]
+            .Replace('+', '-')
+            .Replace('/', '_')
+            .Replace("=", "");
+            return result;
         }
     }
 }
