@@ -2,17 +2,32 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">LinkPulse</h1>
-    <input type="text" id="inputurl">
-    <button id="actionbutton">Shorten the URL</button>
-    <div id="outputpanel">
-        <input type="text" id="output" disabled>
-        <p id="outputinfo"></p>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h3>LinkPulse</h3>
+            <div class="form-group">
+                <label for="textInput">Optional Information:</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="inputurl" placeholder="Enter url">
+                    <div class="input-group-append">
+                        <button class="btn btn-success" type="button" id="actionbutton">Shorten the URL</button>
+                    </div>
+                </div>
+                <small id="outputinfo" class="form-text text-muted"></small>
+            </div>
+            <div class="form-group" id="outputpanel">
+                <label for="urlInput">Optional URL:</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="output" value="" readonly>
+                    <div class="input-group-append">
+                        <button class="btn btn-secondary" type="button" id="copybutton">Copy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    
 </div>
-
 
 @section Scripts
 {

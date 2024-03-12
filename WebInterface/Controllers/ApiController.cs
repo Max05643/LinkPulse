@@ -31,14 +31,8 @@ namespace WebInterface.Controllers
         [HttpPost]
         [Produces("application/json")]
         [Route("/Api/TryAdd")]
-        public JsonResult TryAddNewUrl([FromForm, MaxLength(2000), RegularExpression(@"https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)")] string url)
+        public JsonResult TryAddNewUrl([FromForm, MaxLength(2000), RegularExpression(@"https?:\/\/.+")] string url)
         {
-
-            if (!ModelState.IsValid)
-            {
-                return Json(new URLShorteningResult() { Success = false });
-            }
-
             var result = shortenerController.TryAddNewURL(url, out string? shortenedVersion);
 
             if (result)
