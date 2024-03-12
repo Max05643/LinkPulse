@@ -7,17 +7,20 @@
         <div class="col-md-12">
             <h3>LinkPulse</h3>
             <div class="form-group">
-                <label for="textInput">Optional Information:</label>
+                <label for="textInput">Enter URL to shorten:</label>
                 <div class="input-group">
                     <input type="text" class="form-control" id="inputurl" placeholder="Enter url">
                     <div class="input-group-append">
-                        <button class="btn btn-success" type="button" id="actionbutton">Shorten the URL</button>
+                        <button class="btn btn-success" type="button" id="actionbutton">
+                            <span id="loader" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            <span id="mainactionbuttontext" class="sr-only">Shorten the URL</span>
+                        </button>
                     </div>
                 </div>
                 <small id="outputinfo" class="form-text text-muted"></small>
             </div>
             <div class="form-group" id="outputpanel">
-                <label for="urlInput">Optional URL:</label>
+                <label for="urlInput">Shortened URL:</label>
                 <div class="input-group">
                     <input type="text" class="form-control" id="output" value="" readonly>
                     <div class="input-group-append">
@@ -30,7 +33,7 @@
 </div>
 
 @section Scripts
-{
+    {
     <script src="~/lib/jquery/jquery.min.js" asp-append-version="true"></script>
     <script src="~/js/creationscript.js" asp-append-version="true" defer></script>
 }

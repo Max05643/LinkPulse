@@ -7,12 +7,54 @@ const outputInfo = $("#outputinfo");
 const urlRegExp = new RegExp(String.raw`https?:\/\/.+`);
 
 
+function SetActionButtonStatus(status) {
+    actionButton.prop("disabled", !status);
+    if (status) {
+        $("#loader").stop(true, true).animate({
+            opacity: 0
+        }, 500);
+        $("#mainactionbuttontext").stop(true, true).animate({
+            opacity: 1
+        }, 500);
+    }
+    else {
+        $("#loader").stop(true, true).animate({
+            opacity: 1
+        }, 500);
+        $("#mainactionbuttontext").stop(true, true).animate({
+            opacity: 0
+        }, 500);
+    }
+}
+function FormatDateDifference(startDate, endDate) {
+    const difference = Math.max(0, Math.abs(endDate - startDate));
+    const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+    const result = `${days}:${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    return result;
+}
+
+let lastDateTimeExpiration = null;
+
+function UpdateTime() {
+    if (lastDateTimeExpiration != null) {
+        const differenceFormatted = FormatDateDifference(new Date(), lastDateTimeExpiration);
+        outputInfo.html(`Got it! The shortened url will expire in ${differenceFormatted}`);
+    }
+}
+
 async function CopyUrl() {
     const text = document.getElementById('output').value;
     try {
         await navigator.clipboard.writeText(text);
-    } catch (err) {
+        copyButton.removeClass('btn-secondary').addClass('btn-success transition').text('Copied!');
+        setTimeout(function () {
+            copyButton.removeClass('btn-success transition').addClass('btn-secondary transition').text('Copy');
+        }, 1000);
     }
+    catch { }
 }
 
 function SendRequestToShortenUrl() {
@@ -21,15 +63,18 @@ function SendRequestToShortenUrl() {
 
     if (valueToSend.length > 2000 || !urlRegExp.test(valueToSend)) {
         outputPanel.hide();
+        lastDateTimeExpiration = null
         outputInfo.html("The url provided should not be longer than 2000 characters and should be valid, including protocol");
         return;
     }
     else {
-        outputInfo.html("");
+        outputInfo.html("Waiting...");
     }
 
     let formData = new FormData();
     formData.append("url", valueToSend);
+
+    SetActionButtonStatus(false);
 
     $.ajax({
         type: "POST",
@@ -42,10 +87,13 @@ function SendRequestToShortenUrl() {
             outputInfo.html("Something went wrong");
             outputPanel.hide();
             output.val("");
+            lastDateTimeExpiration = null;
+            SetActionButtonStatus(true);
         },
         success: function (response) {
             if (response.success) {
-                outputInfo.html(`Got it! The url will expire in ${response.timeToExpireInSec} seconds`);
+                let currentDate = new Date();
+                lastDateTimeExpiration = currentDate.setSeconds(currentDate.getSeconds() + response.timeToExpireInSec);
                 output.val(`${window.location.origin}/${response.shortenedUrl}`);
                 outputPanel.show();
             }
@@ -53,8 +101,9 @@ function SendRequestToShortenUrl() {
                 outputInfo.html("Something went wrong");
                 outputPanel.hide();
                 output.val("");
+                lastDateTimeExpiration = null;
             }
-
+            SetActionButtonStatus(true);
         }
     });
 }
@@ -62,3 +111,5 @@ function SendRequestToShortenUrl() {
 outputPanel.hide();
 actionButton.click(SendRequestToShortenUrl);
 copyButton.click(CopyUrl);
+SetActionButtonStatus(true);
+setInterval(UpdateTime, 500);
