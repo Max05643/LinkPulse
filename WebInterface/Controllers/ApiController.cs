@@ -1,6 +1,7 @@
 ﻿using LinkPulseDefinitions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.ComponentModel.DataAnnotations;
 using WebInterface.Models;
 
 namespace WebInterface.Controllers
@@ -30,8 +31,14 @@ namespace WebInterface.Controllers
         [HttpPost]
         [Produces("application/json")]
         [Route("/Api/TryAdd")]
-        public JsonResult TryAddNewUrl([FromForm] string url)
+        public JsonResult TryAddNewUrl([FromForm, MaxLength(2000), RegularExpression(@"https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)")] string url)
         {
+
+            if (!ModelState.IsValid)
+            {
+                return Json(new URLShorteningResult() { Success = false });
+            }
+
             var result = shortenerController.TryAddNewURL(url, out string? shortenedVersion);
 
             if (result)
