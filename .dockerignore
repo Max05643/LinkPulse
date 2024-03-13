@@ -1,0 +1,11 @@
+**/bin/
+**/obj/
+**/out/
+**/node_modules/
+
+Dockerfile*
+**/*.trx
+**/*.md
+**/*.ps1
+**/*.cmd
+**/*.sh
