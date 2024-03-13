@@ -17,6 +17,7 @@ namespace LinkPulseImplementations
         readonly IStorage storage;
         readonly TimeSpan? expirationTime;
         readonly ILogger<ShortenerController> logger;
+        readonly bool shouldUpdateExpirationTimeOnRead;
 
         public ShortenerController(IHashProvider hashProvider, IStorage storage, IConfiguration configuration, ILogger<ShortenerController> logger)
         {
@@ -34,6 +35,19 @@ namespace LinkPulseImplementations
             else
             {
                 expirationTime = TimeSpan.FromSeconds(int.Parse(expirationTimeConfig));
+            }
+
+
+            var expirationUpdateConfig = configuration["Shortener:ExpandExpirationTimeOnEveryUse"];
+
+            if (expirationUpdateConfig == null)
+            {
+                shouldUpdateExpirationTimeOnRead = false;
+                logger.LogWarning("'Shortener:ExpandExpirationTimeOnEveryUse' key was not found in configuration for ShortenerController. Expiration time for urls won't be updated on every usage");
+            }
+            else
+            {
+                shouldUpdateExpirationTimeOnRead = bool.Parse(expirationUpdateConfig);
             }
         }
 
@@ -57,7 +71,7 @@ namespace LinkPulseImplementations
 
         bool IShortenerController.TryGetURLByShortenedVersion(string shortenedVersion, out string? fullUrl)
         {
-            return storage.TryGetValue(shortenedVersion, out fullUrl);
+            return storage.TryGetValue(shortenedVersion, out fullUrl, shouldUpdateExpirationTimeOnRead ? expirationTime : null);
         }
     }
 }

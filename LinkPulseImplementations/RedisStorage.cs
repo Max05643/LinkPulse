@@ -31,6 +31,7 @@ namespace LinkPulseImplementations
             {
                 scriptsPrepared.Add("AddKey", LuaScriptsLoader.Load("LinkPulseImplementations.LuaScripts", "AddKey"));
                 scriptsPrepared.Add("GetKey", LuaScriptsLoader.Load("LinkPulseImplementations.LuaScripts", "GetKey"));
+                scriptsPrepared.Add("GetKeyUpdateExp", LuaScriptsLoader.Load("LinkPulseImplementations.LuaScripts", "GetKeyUpdateExp"));
                 scriptsPrepared.Add("AddKeyExp", LuaScriptsLoader.Load("LinkPulseImplementations.LuaScripts", "AddKeyExp"));
             }
             catch (Exception ex)
@@ -65,13 +66,26 @@ namespace LinkPulseImplementations
             }
         }
 
-        bool IStorage.TryGetValue(string key, out string? value)
+        bool IStorage.TryGetValue(string key, out string? value, TimeSpan? newTimeToExpire)
         {
             try
             {
                 var redisClient = connectionMultiplexer.GetDatabase();
-                var args = new { key = (RedisKey)key };
-                var result = redisClient.ScriptEvaluate(scriptsPrepared["GetKey"], args);
+
+
+                RedisResult? result = null;
+
+                if (!newTimeToExpire.HasValue)
+                {
+                    var args = new { key = (RedisKey)key };
+                    result = redisClient.ScriptEvaluate(scriptsPrepared["GetKey"], args);
+                }
+                else
+                {
+                    var args = new { key = (RedisKey)key, exp = (RedisValue)((int)newTimeToExpire.Value.TotalMilliseconds) };
+                    result = redisClient.ScriptEvaluate(scriptsPrepared["GetKeyUpdateExp"], args);
+                }
+
 
                 if (result == null || result.IsNull)
                 {

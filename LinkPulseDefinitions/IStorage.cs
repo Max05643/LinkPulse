@@ -17,8 +17,8 @@ namespace LinkPulseDefinitions
         bool TryAddKeyValuePair(string key, string value, TimeSpan? timeToExpire = null);
 
         /// <summary>
-        /// Tries to get a value by the key. Will assign value and return true on success
+        /// Tries to get a value by the key. Will assign value and return true on success. Will assign new expiration time if newTimeToExpire is specified
         /// </summary>
-        bool TryGetValue(string key, out string? value);
+        bool TryGetValue(string key, out string? value, TimeSpan? newTimeToExpire = null);
     }
 }

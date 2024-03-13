@@ -4,12 +4,16 @@
     <None Remove="LuaScripts\AddKey" />
     <None Remove="LuaScripts\AddKeyExp" />
     <None Remove="LuaScripts\GetKey" />
+    <None Remove="LuaScripts\GetKeyUpdateExp" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="LuaScripts\AddKey" />
     <EmbeddedResource Include="LuaScripts\AddKeyExp" />
     <EmbeddedResource Include="LuaScripts\GetKey" />
+    <EmbeddedResource Include="LuaScripts\GetKeyUpdateExp">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>

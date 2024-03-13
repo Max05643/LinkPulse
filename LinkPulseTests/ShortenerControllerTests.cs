@@ -43,7 +43,7 @@ namespace LinkPulseTests
         {
             // Arrange
             var mockStorage = new Mock<IStorage>();
-            mockStorage.Setup(mock => mock.TryGetValue(It.IsAny<string>(), out It.Ref<string?>.IsAny)).Callback((string key, out string value) => { value = "http://example.com"; }).Returns(true);
+            mockStorage.Setup(mock => mock.TryGetValue(It.IsAny<string>(), out It.Ref<string?>.IsAny, It.IsAny<TimeSpan?>())).Callback((string key, out string value) => { value = "http://example.com"; }).Returns(true);
 
             var mockConfiguration = new ConfigurationManager();
             mockConfiguration.AddInMemoryCollection(new Dictionary<string, string?> { ["Shortener:ExpirationTimeSeconds"] = "60" });
@@ -59,7 +59,7 @@ namespace LinkPulseTests
             // Assert
             result.ShouldBeTrue();
             fullUrl.ShouldBe("http://example.com");
-            mockStorage.Verify(st => st.TryGetValue("shortened", out It.Ref<string?>.IsAny), Times.Once);
+            mockStorage.Verify(st => st.TryGetValue("shortened", out It.Ref<string?>.IsAny, It.IsAny<TimeSpan?>()), Times.Once);
         }
 
         [Fact]
@@ -67,7 +67,7 @@ namespace LinkPulseTests
         {
             // Arrange
             var mockStorage = new Mock<IStorage>();
-            mockStorage.Setup(mock => mock.TryGetValue(It.IsAny<string>(), out It.Ref<string?>.IsAny)).Callback((string key, out string? value) => { value = null; }).Returns(false);
+            mockStorage.Setup(mock => mock.TryGetValue(It.IsAny<string>(), out It.Ref<string?>.IsAny, It.IsAny<TimeSpan?>())).Callback((string key, out string? value) => { value = null; }).Returns(false);
 
             var mockConfiguration = new ConfigurationManager();
             mockConfiguration.AddInMemoryCollection(new Dictionary<string, string?> { ["Shortener:ExpirationTimeSeconds"] = "60" });
@@ -83,7 +83,7 @@ namespace LinkPulseTests
             // Assert
             result.ShouldBeFalse();
             fullUrl.ShouldBeNull();
-            mockStorage.Verify(st => st.TryGetValue("shortened", out It.Ref<string?>.IsAny), Times.Once);
+            mockStorage.Verify(st => st.TryGetValue("shortened", out It.Ref<string?>.IsAny, It.IsAny<TimeSpan?>()), Times.Once);
         }
 
     }

@@ -1,0 +1,7 @@
+﻿local expire_time_ms = tonumber(@exp)
+
+local value = redis.call('GET', @key)
+if value then
+    redis.call('PEXPIRE', @key, expire_time_ms)
+end
+return value
