@@ -43,7 +43,7 @@ namespace LinkPulseTests
         {
             // Arrange
             var mockStorage = new Mock<IStorage>();
-            mockStorage.Setup(mock => mock.TryGetValue(It.IsAny<string>(), out It.Ref<string?>.IsAny, It.IsAny<TimeSpan?>())).Callback((string key, out string value) => { value = "http://example.com"; }).Returns(true);
+            mockStorage.Setup(mock => mock.TryGetValue(It.IsAny<string>(), out It.Ref<string?>.IsAny, It.IsAny<TimeSpan?>())).Callback((string key, out string value, TimeSpan? exp) => { value = "http://example.com"; }).Returns(true);
 
             var mockConfiguration = new ConfigurationManager();
             mockConfiguration.AddInMemoryCollection(new Dictionary<string, string?> { ["Shortener:ExpirationTimeSeconds"] = "60" });
@@ -67,7 +67,7 @@ namespace LinkPulseTests
         {
             // Arrange
             var mockStorage = new Mock<IStorage>();
-            mockStorage.Setup(mock => mock.TryGetValue(It.IsAny<string>(), out It.Ref<string?>.IsAny, It.IsAny<TimeSpan?>())).Callback((string key, out string? value) => { value = null; }).Returns(false);
+            mockStorage.Setup(mock => mock.TryGetValue(It.IsAny<string>(), out It.Ref<string?>.IsAny, It.IsAny<TimeSpan?>())).Callback((string key, out string? value, TimeSpan? exp) => { value = null; }).Returns(false);
 
             var mockConfiguration = new ConfigurationManager();
             mockConfiguration.AddInMemoryCollection(new Dictionary<string, string?> { ["Shortener:ExpirationTimeSeconds"] = "60" });
