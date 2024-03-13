@@ -2,35 +2,34 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <h3>LinkPulse</h3>
-            <div class="form-group">
-                <label for="textInput">Enter URL to shorten:</label>
-                <div class="input-group">
-                    <input type="text" class="form-control" id="inputurl" placeholder="Enter url">
-                    <div class="input-group-append">
-                        <button class="btn btn-success" type="button" id="actionbutton">
-                            <span id="loader" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                            <span id="mainactionbuttontext" class="sr-only">Shorten the URL</span>
-                        </button>
-                    </div>
+<div class="container d-flex justify-content-center align-items-center" style="min-height:90vh; max-height:95vh;">
+    <div class="card p-4 shadow-sm">
+        <h3 class ="text-center mb-4">LinkPulse</h3>
+        <div class="form-group">
+            <label for="textInput">Enter URL to shorten:</label>
+            <div class="input-group">
+                <input type="text" class="form-control shadow-sm" id="inputurl" placeholder="Enter url">
+                <div class="input-group-append">
+                    <button class="btn btn-success m-3" type="button" id="actionbutton">
+                        <span id="loader" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        <span id="mainactionbuttontext" class="sr-only">Shorten the URL</span>
+                    </button>
                 </div>
-                <small id="outputinfo" class="form-text text-muted"></small>
             </div>
-            <div class="form-group" id="outputpanel">
-                <label for="urlInput">Shortened URL:</label>
-                <div class="input-group">
-                    <input type="text" class="form-control" id="output" value="" readonly>
-                    <div class="input-group-append">
-                        <button class="btn btn-secondary" type="button" id="copybutton">Copy</button>
-                    </div>
+            <small id="outputinfo" class="form-text text-muted"></small>
+        </div>
+        <div class="form-group" id="outputpanel">
+            <label for="urlInput">Shortened URL:</label>
+            <div class="input-group">
+                <input type="text" class="form-control shadow-sm" id="output" value="" readonly>
+                <div class="input-group-append">
+                    <button class="btn btn-secondary m-3" type="button" id="copybutton">Copy</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 
 @section Scripts
     {
