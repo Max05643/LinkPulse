@@ -6,7 +6,7 @@ COPY *.sln .
 COPY LinkPulseDefinitions/*.csproj ./LinkPulseDefinitions/
 COPY LinkPulseImplementations/*.csproj ./LinkPulseImplementations/
 COPY LinkPulseTests/*.csproj ./LinkPulseTests/
-COPY WebInterface.Tests/*.csproj ./WebInterface.Tests/
+COPY WebInterface/*.csproj ./WebInterface/
 RUN dotnet restore
 
 
