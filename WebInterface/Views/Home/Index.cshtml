@@ -4,7 +4,7 @@
 
 <div class="container d-flex justify-content-center align-items-center" style="min-height:90vh; max-height:95vh;">
     <div class="card p-4 shadow-sm">
-        <h3 class ="text-center mb-4">LinkPulse</h3>
+        <h3 class="text-center mb-4">LinkPulse</h3>
         <div class="form-group">
             <label for="inputurl">Enter URL to shorten:</label>
             <div class="input-group">
@@ -27,6 +27,7 @@
                 </div>
             </div>
         </div>
+        <div id="qrcode" class="m-4 shadow" style="width:256px;height:256px;"></div>
     </div>
 </div>
 
@@ -34,5 +35,6 @@
 @section Scripts
     {
     <script src="~/lib/jquery/jquery.min.js" asp-append-version="true"></script>
+    <script src="~/lib/qrcodejs/qrcode.min.js" asp-append-version="true"></script>
     <script src="~/js/creationscript.js" asp-append-version="true" defer></script>
 }

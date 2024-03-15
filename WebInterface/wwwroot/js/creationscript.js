@@ -5,7 +5,22 @@ const output = $("#output");
 const outputPanel = $("#outputpanel");
 const outputInfo = $("#outputinfo");
 const urlRegExp = new RegExp(String.raw`https?:\/\/.+`);
+const qrCodeDiv = $("#qrcode");
 
+const qrCodeHandler = new QRCode(document.getElementById("qrcode"), {
+    text: "",
+    width: 256,
+    height: 256,
+});
+function HideQrCode() {
+    qrCodeHandler.clear();
+    qrCodeDiv.hide();
+}
+
+function ShowQrCode(url) {
+    qrCodeHandler.makeCode(url);
+    qrCodeDiv.show();
+}
 
 function SetActionButtonStatus(status) {
     actionButton.prop("disabled", !status);
@@ -27,7 +42,7 @@ function SetActionButtonStatus(status) {
     }
 }
 function FormatDateDifference(startDate, endDate) {
-    const difference = Math.max(0, Math.abs(endDate - startDate));
+    const difference = Math.max(0, endDate - startDate);
     const days = Math.floor(difference / (1000 * 60 * 60 * 24));
     const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
@@ -58,6 +73,8 @@ async function CopyUrl() {
 }
 
 function SendRequestToShortenUrl() {
+
+    HideQrCode();
 
     const valueToSend = inputUrl.val();
 
@@ -94,8 +111,10 @@ function SendRequestToShortenUrl() {
             if (response.success) {
                 let currentDate = new Date();
                 lastDateTimeExpiration = currentDate.setSeconds(currentDate.getSeconds() + response.timeToExpireInSec);
-                output.val(`${window.location.origin}/${response.shortenedUrl}`);
+                const newUrl = `${window.location.origin}/${response.shortenedUrl}`;
+                output.val(newUrl);
                 outputPanel.show();
+                ShowQrCode(newUrl)
             }
             else {
                 outputInfo.html("Something went wrong");
@@ -108,6 +127,7 @@ function SendRequestToShortenUrl() {
     });
 }
 
+HideQrCode();
 outputPanel.hide();
 actionButton.click(SendRequestToShortenUrl);
 copyButton.click(CopyUrl);
